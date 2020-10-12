@@ -1,0 +1,34 @@
+mvn archetype:generate -DgroupId=com.cloudacademy.bitcoin.converter -DartifactId=bitcoin-converter-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+tree
+cd bitcoin-converter-app/
+mvn package
+java -cp target/bitcoin-converter-app-1.0-SNAPSHOT.jar com.cloudacademy.bitcoin.converter.App
+
+mvn test
+
+==========================
+
+https://search.maven.org/
+https://search.maven.org/artifact/org.apache.httpcomponents/httpclient/4.5.13/jar
+search -> org.apache.httpcomponents
+
+Update POM
+
+mvn install 
+
+==========================
+
+curl -s https://api.coindesk.com/v1/bpi/currentprice/NZD.json | jq .
+
+==========================
+
+java -jar target/bitcoint-converter-app-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+mvn package -Dmaven.test.skip=true
+
+==========================
+
+
+==========================
+
+
+==========================
