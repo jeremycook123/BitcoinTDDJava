@@ -12,7 +12,7 @@
   <name>${project.artifactId}</name>
   <description>Redis demo - creates executable jar</description>
   <organization>
-    <name>CloudAcademy 2020</name>
+    <name>CloudAcademy</name>
     <url>https://cloudacademy.com</url>
   </organization>
 
