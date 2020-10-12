@@ -3,9 +3,9 @@ name:
 on:
   push:
     branches:
-      - main
+    - main
     tags:
-      - *.*.*
+    - *.*.*
 
 jobs:
   build:
