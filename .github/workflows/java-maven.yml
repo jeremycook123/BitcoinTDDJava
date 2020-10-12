@@ -1,4 +1,4 @@
-name: Java CI
+name: 
 
 on: [push]
 
@@ -19,7 +19,7 @@ jobs:
         run: |
           mvn -B clean package -DbaseVersion=${{ github.event.release.tag_name }}
           mkdir staging && cp target/*.jar staging
-        if: !startsWith(github.ref, 'refs/tags/')
+        else:
         run: |
           mvn -B clean package
           mkdir staging && cp target/*.jar staging
@@ -39,9 +39,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
