@@ -19,7 +19,7 @@ jobs:
         run: |
           mvn -B clean package -DbaseVersion=${{ github.event.release.tag_name }}
           mkdir staging && cp target/*.jar staging
-        else:
+        if: false == startsWith(github.ref, 'refs/tags/')
         run: |
           mvn -B clean package
           mkdir staging && cp target/*.jar staging
