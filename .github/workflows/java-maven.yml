@@ -17,14 +17,16 @@ jobs:
       - name: Build with Maven - Tagged
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          mvn -B clean package -DbaseVersion=${{ github.event.release.tag_name }}
+          mvn versions:set -DremoveSnapshot
+          mvn -B clean package
           mkdir staging && cp target/*.jar staging
 
       - name: Build with Maven - Untagged
         if: false == startsWith(github.ref, 'refs/tags/')
         run: |
           mvn -B clean package
-          mkdir staging && cp target/*.jar staging
+          mkdir staging
+          cp target/*.jar staging
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
