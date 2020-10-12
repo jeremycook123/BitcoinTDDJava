@@ -1,14 +1,13 @@
 package com.cloudacademy.bitcoin.converter;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.apache.http.client.HttpClient;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -27,7 +26,6 @@ import java.io.IOException;
 /**
  * Unit test for simple App.
  */
-@RunWith(MockitoJUnitRunner.class)
 public class AppTest 
 {
     private static final double DELTA = 0;
@@ -40,7 +38,7 @@ public class AppTest
 
     private App app;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         client = mock(CloseableHttpClient.class);
@@ -67,7 +65,7 @@ public class AppTest
 
         //assert
         double expected = 15095.5670;
-        assertEquals(expected, actual, DELTA);
+        Assertions.assertEquals(expected, actual, DELTA);
     }
 
     @Test
@@ -78,13 +76,13 @@ public class AppTest
         when(response.getEntity()).thenReturn(entity);
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
-
+    
         App app = new App(client);
         var actual = app.GetExchangeRate("USD");
-
+    
         //assert
         double expected = 10095.9106;
-        assertEquals(expected, actual, DELTA);
+        Assertions.assertEquals(expected, actual, DELTA);
     }
 
     @Test
@@ -95,15 +93,15 @@ public class AppTest
         when(response.getEntity()).thenReturn(entity);
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
-
+    
         App app = new App(client);
         var actual = app.ConvertBitcoins("USD", 1);
-
+    
         //assert
         double expected = 10095.9106;
-        assertEquals(expected, actual, DELTA);
+        Assertions.assertEquals(expected, actual, DELTA);
     }
-
+    
     @Test
     public void shouldConvert2BitcoinsToUSD() throws IOException
     {
@@ -112,15 +110,15 @@ public class AppTest
         when(response.getEntity()).thenReturn(entity);
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
-
+    
         App app = new App(client);
         var actual = app.ConvertBitcoins("USD", 2);
-
+    
         //assert
         double expected = 20191.8212;
-        assertEquals(expected, actual, DELTA);
+        Assertions.assertEquals(expected, actual, DELTA);
     }
-
+    
     @Test
     public void shouldConvert1BitcoinToNZD() throws IOException
     {
@@ -129,15 +127,15 @@ public class AppTest
         when(response.getEntity()).thenReturn(entity);
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
-
+    
         App app = new App(client);
         var actual = app.ConvertBitcoins("NZD", 1);
-
+    
         //assert
         double expected = 15095.5670;
-        assertEquals(expected, actual, DELTA);
+        Assertions.assertEquals(expected, actual, DELTA);
     }
-
+    
     @Test
     public void shouldConvert2BitcoinsToNZD() throws IOException
     {
@@ -146,28 +144,27 @@ public class AppTest
         when(response.getEntity()).thenReturn(entity);
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
-
+    
         App app = new App(client);
         var actual = app.ConvertBitcoins("NZD", 2);
-
+    
         //assert
         double expected = 30191.1340;
-        assertEquals(expected, actual, DELTA);
+        Assertions.assertEquals(expected, actual, DELTA);
     }
-
+    
     @Test
     public void shouldReturnNegative1WhenServiceUnavailable() throws IOException
     {
         when(statusLine.getStatusCode()).thenReturn(503);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
-
+    
         App app = new App(client);
         var actual = app.ConvertBitcoins("NZD", 2);
-
+    
         //assert
         double expected = -1;
-        assertEquals(expected, actual, DELTA);
+        Assertions.assertEquals(expected, actual, DELTA);
     }
-
 }
