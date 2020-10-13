@@ -76,7 +76,7 @@ public class ConverterSvc
                     InputStream inputStream = res.getEntity().getContent();
                     var json = new BufferedReader(new InputStreamReader(inputStream));
 
-                    @SuppressWarnings( "deprecation" )
+                    @SuppressWarnings("deprecation")
                     JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
                     String n = jsonObject.get("bpi").getAsJsonObject().get(currency).getAsJsonObject().get("rate").getAsString();
                     NumberFormat nf = NumberFormat.getInstance();
@@ -86,7 +86,9 @@ public class ConverterSvc
                 default:
                     rate = -1;
             }
-        } catch (Exception e) {
+        } catch (IOException ex) {
+            rate = -1;
+        } catch (java.text.ParseException ex) {
             rate = -1;
         }
         finally {

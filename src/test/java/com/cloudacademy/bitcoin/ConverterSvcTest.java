@@ -21,6 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doThrow;
 
 import java.io.IOException;
 
@@ -162,8 +163,22 @@ public class ConverterSvcTest
     }
 
     @Test
-    public void shouldReturnNegative1WhenIOExceptionThrown() throws IOException {
+    public void shouldReturnNegative1WhenExecuteThrowsIOException() throws IOException {
         when(client.execute(any(HttpGet.class))).thenThrow(IOException.class);
+    
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.ConvertBitcoins("NZD", 2);
+    
+        //assert
+        double expected = -1;
+        Assertions.assertEquals(expected, actual, DELTA);
+    }
+
+    @Test
+    public void shouldReturnNegative1WhenCloseThrowsIOException() throws IOException {
+        doThrow(IOException.class)
+        .when(client)
+        .close();
     
         ConverterSvc converterSvc = new ConverterSvc(client);
         var actual = converterSvc.ConvertBitcoins("NZD", 2);
