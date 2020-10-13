@@ -1,4 +1,4 @@
-package com.cloudacademy.bitcoin.converter;
+package com.cloudacademy.bitcoin;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +14,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
+
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -24,9 +25,9 @@ import static org.mockito.Mockito.any;
 import java.io.IOException;
 
 /**
- * Unit test for simple App.
+ * Unit test for simple ConverterSvc.
  */
-public class AppTest 
+public class ConverterSvcTest 
 {
     private static final double DELTA = 0;
 
@@ -36,7 +37,7 @@ public class AppTest
     private HttpEntity entity;
     private InputStream stream;
 
-    private App app;
+    private ConverterSvc converterSvc;
 
     @BeforeEach
     public void setUp()
@@ -48,7 +49,7 @@ public class AppTest
 
         stream = new ByteArrayInputStream("{\"bpi\":{\"USD\":{\"code\":\"USD\",\"rate\":\"10,095.9106\",\"description\":\"United States Dollar\",\"rate_float\":10095.9106},\"NZD\":{\"code\":\"NZD\",\"rate\":\"15,095.5670\",\"description\":\"New Zealand Dollar\",\"rate_float\":15095.567}}}".getBytes());
 
-        app = new App(client);
+        converterSvc = new ConverterSvc(client);
     }
 
     @Test
@@ -60,8 +61,8 @@ public class AppTest
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
 
-        App app = new App(client);
-        var actual = app.GetExchangeRate("NZD");
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.GetExchangeRate("NZD");
 
         //assert
         double expected = 15095.5670;
@@ -77,8 +78,8 @@ public class AppTest
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
-        App app = new App(client);
-        var actual = app.GetExchangeRate("USD");
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.GetExchangeRate("USD");
     
         //assert
         double expected = 10095.9106;
@@ -94,8 +95,8 @@ public class AppTest
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
-        App app = new App(client);
-        var actual = app.ConvertBitcoins("USD", 1);
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.ConvertBitcoins("USD", 1);
     
         //assert
         double expected = 10095.9106;
@@ -111,8 +112,8 @@ public class AppTest
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
-        App app = new App(client);
-        var actual = app.ConvertBitcoins("USD", 2);
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.ConvertBitcoins("USD", 2);
     
         //assert
         double expected = 20191.8212;
@@ -128,8 +129,8 @@ public class AppTest
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
-        App app = new App(client);
-        var actual = app.ConvertBitcoins("NZD", 1);
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.ConvertBitcoins("NZD", 1);
     
         //assert
         double expected = 15095.5670;
@@ -145,8 +146,8 @@ public class AppTest
         when(entity.getContent()).thenReturn(stream);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
-        App app = new App(client);
-        var actual = app.ConvertBitcoins("NZD", 2);
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.ConvertBitcoins("NZD", 2);
     
         //assert
         double expected = 30191.1340;
@@ -160,8 +161,8 @@ public class AppTest
         when(response.getStatusLine()).thenReturn(statusLine);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
-        App app = new App(client);
-        var actual = app.ConvertBitcoins("NZD", 2);
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.ConvertBitcoins("NZD", 2);
     
         //assert
         double expected = -1;

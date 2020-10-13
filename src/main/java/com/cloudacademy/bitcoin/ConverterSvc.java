@@ -1,4 +1,4 @@
-package com.cloudacademy.bitcoin.converter;
+package com.cloudacademy.bitcoin;
 
 import java.io.IOException;
 
@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 
 import java.io.ByteArrayInputStream;
 
-public class App 
+public class ConverterSvc 
 {
     private final String BITCOIN_NZDUSD_URL = "https://api.coindesk.com/v1/bpi/currentprice/NZD.json";
     private final HttpGet httpget = new HttpGet(BITCOIN_NZDUSD_URL);
@@ -56,12 +56,12 @@ public class App
       }
     */
 
-    public App()
+    public ConverterSvc()
     {
         this.httpclient = HttpClients.createDefault();
     }
 
-    public App(CloseableHttpClient httpClient)
+    public ConverterSvc(CloseableHttpClient httpClient)
     {
         this.httpclient = httpClient;
     }
