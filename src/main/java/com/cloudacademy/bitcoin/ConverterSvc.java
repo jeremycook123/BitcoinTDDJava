@@ -56,24 +56,20 @@ public class ConverterSvc
       }
     */
 
-    public ConverterSvc()
-    {
+    public ConverterSvc() {
         this.httpclient = HttpClients.createDefault();
     }
 
-    public ConverterSvc(CloseableHttpClient httpClient)
-    {
+    public ConverterSvc(CloseableHttpClient httpClient) {
         this.httpclient = httpClient;
     }
 
-    public double GetExchangeRate(String currency) throws IOException
-    {
+    public double GetExchangeRate(String currency) throws IOException {
         double rate = 0;
 
         try {
             CloseableHttpResponse res = this.httpclient.execute(httpget);
-            switch (res.getStatusLine().getStatusCode())
-            {
+            switch (res.getStatusLine().getStatusCode()) {
                 case 200:
                     HttpEntity entity = res.getEntity();
 
@@ -91,7 +87,6 @@ public class ConverterSvc
                     rate = -1;
             }
         } catch (Exception e) {
-            e.printStackTrace();
             rate = -1;
         }
         finally {
@@ -101,19 +96,16 @@ public class ConverterSvc
         return rate;
     }
 
-    public double ConvertBitcoins(String currency, int coins)
-    {
+    public double ConvertBitcoins(String currency, int coins) {
         double dollars = 0;
 
         try {
             var exchangeRate = GetExchangeRate(currency);
 
-            if(exchangeRate >= 0)
-            {
+            if(exchangeRate >= 0) {
                 dollars = exchangeRate * coins;
             }
-            else
-            {
+            else {
                 dollars = -1;
             }
         }

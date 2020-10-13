@@ -40,8 +40,7 @@ public class ConverterSvcTest
     private ConverterSvc converterSvc;
 
     @BeforeEach
-    public void setUp()
-    {
+    public void setUp() {
         client = mock(CloseableHttpClient.class);
         response = mock(CloseableHttpResponse.class);
         statusLine = mock(StatusLine.class);
@@ -53,8 +52,7 @@ public class ConverterSvcTest
     }
 
     @Test
-    public void shouldGetNZDExchangeRate() throws IOException
-    {
+    public void shouldGetNZDExchangeRate() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
@@ -70,8 +68,7 @@ public class ConverterSvcTest
     }
 
     @Test
-    public void shouldGetUSDExchangeRate() throws IOException
-    {
+    public void shouldGetUSDExchangeRate() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
@@ -87,8 +84,7 @@ public class ConverterSvcTest
     }
 
     @Test
-    public void shouldConvert1BitcoinToUSD() throws IOException
-    {
+    public void shouldConvert1BitcoinToUSD() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
@@ -104,8 +100,7 @@ public class ConverterSvcTest
     }
     
     @Test
-    public void shouldConvert2BitcoinsToUSD() throws IOException
-    {
+    public void shouldConvert2BitcoinsToUSD() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
@@ -121,8 +116,7 @@ public class ConverterSvcTest
     }
     
     @Test
-    public void shouldConvert1BitcoinToNZD() throws IOException
-    {
+    public void shouldConvert1BitcoinToNZD() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
@@ -138,8 +132,7 @@ public class ConverterSvcTest
     }
     
     @Test
-    public void shouldConvert2BitcoinsToNZD() throws IOException
-    {
+    public void shouldConvert2BitcoinsToNZD() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
@@ -155,11 +148,22 @@ public class ConverterSvcTest
     }
     
     @Test
-    public void shouldReturnNegative1WhenServiceUnavailable() throws IOException
-    {
+    public void shouldReturnNegative1WhenServiceUnavailable() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(503);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(client.execute(any(HttpGet.class))).thenReturn(response);
+    
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.ConvertBitcoins("NZD", 2);
+    
+        //assert
+        double expected = -1;
+        Assertions.assertEquals(expected, actual, DELTA);
+    }
+
+    @Test
+    public void shouldReturnNegative1WhenIOExceptionThrown() throws IOException {
+        when(client.execute(any(HttpGet.class))).thenThrow(IOException.class);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
         var actual = converterSvc.ConvertBitcoins("NZD", 2);
