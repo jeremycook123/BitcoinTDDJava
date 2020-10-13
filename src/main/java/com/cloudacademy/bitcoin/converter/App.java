@@ -27,7 +27,34 @@ public class App
     private final String BITCOIN_NZDUSD_URL = "https://api.coindesk.com/v1/bpi/currentprice/NZD.json";
     private final HttpGet httpget = new HttpGet(BITCOIN_NZDUSD_URL);
 
-    CloseableHttpClient httpclient;
+    private CloseableHttpClient httpclient;
+
+    /*
+    //curl -s https://api.coindesk.com/v1/bpi/currentprice/NZD.json | jq .
+    //example json response from coindesk api:
+    {
+        "time": {
+          "updated": "Oct 13, 2020 20:24:00 UTC",
+          "updatedISO": "2020-10-13T20:24:00+00:00",
+          "updateduk": "Oct 13, 2020 at 21:24 BST"
+        },
+        "disclaimer": "This data was produced from the CoinDesk Bitcoin Price Index (USD)",
+        "bpi": {
+          "USD": {
+            "code": "USD",
+            "rate": "11,431.5133",
+            "description": "United States Dollar",
+            "rate_float": 11431.5133
+          },
+          "NZD": {
+            "code": "NZD",
+            "rate": "17,193.0989",
+            "description": "New Zealand Dollar",
+            "rate_float": 17193.0989
+          }
+        }
+      }
+    */
 
     public App()
     {
@@ -39,7 +66,7 @@ public class App
         this.httpclient = httpClient;
     }
 
-    public double GetExchangeRate(String currency)
+    public double GetExchangeRate(String currency) throws IOException
     {
         double rate = 0;
 
@@ -67,29 +94,33 @@ public class App
             e.printStackTrace();
             rate = -1;
         }
+        finally {
+            httpclient.close();
+        }
 
         return rate;
     }
 
     public double ConvertBitcoins(String currency, int coins)
     {
-        double exchangeRate = GetExchangeRate(currency);
         double dollars = 0;
 
-        if(exchangeRate >= 0)
-        {
-            dollars = exchangeRate * coins;
+        try {
+            var exchangeRate = GetExchangeRate(currency);
+
+            if(exchangeRate >= 0)
+            {
+                dollars = exchangeRate * coins;
+            }
+            else
+            {
+                dollars = -1;
+            }
         }
-        else
-        {
+        catch (IOException ex) {
             dollars = -1;
         }
 
         return dollars;
-    }
-
-    public static void main(String[] args){
-        var actual = new App().GetExchangeRate("NZD");
-        System.out.println(actual);
     }
 }
