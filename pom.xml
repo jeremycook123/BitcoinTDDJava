@@ -150,7 +150,7 @@
           <artifactId>coveralls-maven-plugin</artifactId>
           <version>4.3.0</version>
           <configuration>
-              <repoToken>VoGdt2rMi9WkAJ0gaC7PlPOny5QesLrk5</repoToken>
+              <repoToken>${coveralls.secret}</repoToken>
           </configuration>
           <dependencies>
           <dependency>
