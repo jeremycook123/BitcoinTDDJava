@@ -17,11 +17,14 @@ jobs:
           java-version: 11
 
       - name: Maven Build
-        if: false == startsWith(github.ref, 'refs/tags/')
         run: |
           mvn -B clean package
           mkdir staging
           cp target/*.jar staging
+
+      - name: Code Coverage
+        run: |
+          mvn -B jacoco:prepare-agent clean test jacoco:report coveralls:report
 
       - name: Artifact Upload
         uses: actions/upload-artifact@v2
