@@ -86,9 +86,7 @@ public class ConverterSvc
                 default:
                     rate = -1;
             }
-        } catch (IOException ex) {
-            rate = -1;
-        } catch (java.text.ParseException ex) {
+        } catch (Exception ex) {
             rate = -1;
         }
         finally {
@@ -111,7 +109,7 @@ public class ConverterSvc
                 dollars = -1;
             }
         }
-        catch (IOException ex) {
+        catch (Exception ex) {
             dollars = -1;
         }
 
