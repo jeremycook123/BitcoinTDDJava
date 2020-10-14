@@ -58,7 +58,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
 
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.GetExchangeRate("NZD");
+        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.NZD);
 
         //assert
         double expected = 15095.5670;
@@ -74,7 +74,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.GetExchangeRate("USD");
+        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.USD);
     
         //assert
         double expected = 10095.9106;
@@ -90,7 +90,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins("USD", 1);
+        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.USD, 1);
     
         //assert
         double expected = 10095.9106;
@@ -106,7 +106,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins("USD", 2);
+        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.USD, 2);
     
         //assert
         double expected = 20191.8212;
@@ -122,7 +122,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins("NZD", 1);
+        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 1);
     
         //assert
         double expected = 15095.5670;
@@ -138,7 +138,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins("NZD", 2);
+        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 2);
     
         //assert
         double expected = 30191.1340;
@@ -152,7 +152,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins("NZD", 2);
+        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 2);
     
         //assert
         double expected = -1;
@@ -164,7 +164,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenThrow(IOException.class);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins("NZD", 2);
+        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 2);
     
         //assert
         double expected = -1;
@@ -178,7 +178,7 @@ public class ConverterSvcTest
         .close();
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins("NZD", 2);
+        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 2);
     
         //assert
         double expected = -1;

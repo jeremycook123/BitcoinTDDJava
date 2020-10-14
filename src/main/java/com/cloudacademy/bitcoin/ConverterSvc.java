@@ -64,7 +64,12 @@ public class ConverterSvc
         this.httpclient = httpClient;
     }
 
-    public double GetExchangeRate(String currency) throws IOException {
+    public enum Currency {
+        USD,
+        NZD
+    }
+
+    public double GetExchangeRate(Currency currency) throws IOException {
         double rate = 0;
 
         try {
@@ -78,7 +83,7 @@ public class ConverterSvc
 
                     @SuppressWarnings("deprecation")
                     JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
-                    String n = jsonObject.get("bpi").getAsJsonObject().get(currency).getAsJsonObject().get("rate").getAsString();
+                    String n = jsonObject.get("bpi").getAsJsonObject().get(currency.toString()).getAsJsonObject().get("rate").getAsString();
                     NumberFormat nf = NumberFormat.getInstance();
                     rate = nf.parse(n).doubleValue();
 
@@ -96,7 +101,7 @@ public class ConverterSvc
         return rate;
     }
 
-    public double ConvertBitcoins(String currency, int coins) {
+    public double ConvertBitcoins(Currency currency, int coins) {
         double dollars = 0;
 
         try {
