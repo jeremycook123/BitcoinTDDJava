@@ -101,8 +101,12 @@ public class ConverterSvc
         return rate;
     }
 
-    public double ConvertBitcoins(Currency currency, int coins) {
+    public double ConvertBitcoins(Currency currency, int coins) throws IllegalArgumentException {
         double dollars = 0;
+
+        if(coins < 0) {
+            throw new IllegalArgumentException("Number of coins must be >= 0"); 
+        }
 
         try {
             var exchangeRate = GetExchangeRate(currency);

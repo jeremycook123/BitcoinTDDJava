@@ -144,7 +144,19 @@ public class ConverterSvcTest
         double expected = 30191.1340;
         Assertions.assertEquals(expected, actual, DELTA);
     }
+
+    @Test
+    public void shouldThrowExceptionWhenBitcoinsLessThanZero() throws IOException {
+        when(statusLine.getStatusCode()).thenReturn(200);
+        when(response.getStatusLine()).thenReturn(statusLine);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(stream);
+        when(client.execute(any(HttpGet.class))).thenReturn(response);
     
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, -1));
+    }
+
     @Test
     public void shouldReturnNegative1WhenServiceUnavailable() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(503);
