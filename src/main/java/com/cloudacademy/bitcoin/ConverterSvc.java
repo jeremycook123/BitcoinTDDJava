@@ -105,7 +105,7 @@ public class ConverterSvc
         double dollars = 0;
 
         if(coins < 0) {
-            throw new IllegalArgumentException("Number of coins must be >= 0"); 
+            throw new IllegalArgumentException("Number of coins must not be less than zero"); 
         }
 
         try {
