@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.cloudacademy</groupId>
-  <artifactId>bitcoin-converter-app</artifactId>
-  <version>1.0.5-SNAPSHOT</version>
+  <artifactId>bitcoin-converter-svc-lib</artifactId>
+  <version>1.0.6-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>${project.artifactId}</name>
@@ -25,7 +25,7 @@
       <organizationUrl>https://cloudacademy.com</organizationUrl>
       <roles>
         <role>Lead Content Architect</role>
-        <role>DevOps - Research and Trainer</role>
+        <role>DevOps - Researcher and Trainer</role>
       </roles>
     </developer>
   </developers>
@@ -125,32 +125,31 @@
           <version>3.3.0</version>
         </plugin>
 
-<plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.8.6</version>
-    <executions>
-      <execution>
-        <goals>
-            <goal>prepare-agent</goal>
-        </goals>
-      </execution>
-      <execution>
-            <id>report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-      </execution>
-    </executions>
-</plugin>
-
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.6</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>report</id>
+              <phase>prepare-package</phase>
+              <goals>
+                <goal>report</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
         <plugin>
           <groupId>org.eluder.coveralls</groupId>
           <artifactId>coveralls-maven-plugin</artifactId>
           <version>4.3.0</version>
           <configuration>
-              <repoToken>${coveralls.secret}</repoToken>
+            <repoToken>${coveralls.secret}</repoToken>
           </configuration>
           <dependencies>
           <dependency>
@@ -160,6 +159,7 @@
           </dependency>
           </dependencies>
       </plugin>
+
       </plugins>
     </pluginManagement>
   </build>
