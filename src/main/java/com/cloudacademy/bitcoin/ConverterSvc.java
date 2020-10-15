@@ -25,36 +25,46 @@ import java.io.ByteArrayInputStream;
 
 public class ConverterSvc 
 {
-    private final String BITCOIN_NZDUSD_URL = "https://api.coindesk.com/v1/bpi/currentprice/NZD.json";
-    private final HttpGet httpget = new HttpGet(BITCOIN_NZDUSD_URL);
+    private final String BITCOIN_CURRENTPRICE_URL = "https://api.coindesk.com/v1/bpi/currentprice.json";
+    private final HttpGet httpget = new HttpGet(BITCOIN_CURRENTPRICE_URL);
 
     private CloseableHttpClient httpclient;
 
     /*
-    //curl -s https://api.coindesk.com/v1/bpi/currentprice/NZD.json | jq .
+    //curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq .
     //example json response from coindesk api:
     {
         "time": {
-          "updated": "Oct 13, 2020 20:24:00 UTC",
-          "updatedISO": "2020-10-13T20:24:00+00:00",
-          "updateduk": "Oct 13, 2020 at 21:24 BST"
+            "updated": "Oct 15, 2020 22:55:00 UTC",
+            "updatedISO": "2020-10-15T22:55:00+00:00",
+            "updateduk": "Oct 15, 2020 at 23:55 BST"
         },
         "disclaimer": "This data was produced from the CoinDesk Bitcoin Price Index (USD)",
+        "chartName": "Bitcoin",
         "bpi": {
-          "USD": {
+            "USD": {
             "code": "USD",
-            "rate": "11,431.5133",
+            "symbol": "&#36;",
+            "rate": "11,486.5341",
             "description": "United States Dollar",
-            "rate_float": 11431.5133
-          },
-          "NZD": {
-            "code": "NZD",
-            "rate": "17,193.0989",
-            "description": "New Zealand Dollar",
-            "rate_float": 17193.0989
-          }
+            "rate_float": 11486.5341
+            },
+            "GBP": {
+            "code": "GBP",
+            "symbol": "&pound;",
+            "rate": "8,900.8693",
+            "description": "British Pound Sterling",
+            "rate_float": 8900.8693
+            },
+            "EUR": {
+            "code": "EUR",
+            "symbol": "&euro;",
+            "rate": "9,809.3278",
+            "description": "Euro",
+            "rate_float": 9809.3278
+            }
         }
-      }
+    }
     */
 
     public ConverterSvc() {
@@ -67,7 +77,8 @@ public class ConverterSvc
 
     public enum Currency {
         USD,
-        NZD
+        GBP,
+        EUR
     }
 
     public double GetExchangeRate(Currency currency) {

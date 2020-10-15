@@ -45,13 +45,12 @@ public class ConverterSvcTest
         statusLine = mock(StatusLine.class);
         entity = mock(HttpEntity.class);
 
-        stream = new ByteArrayInputStream("{\"bpi\":{\"USD\":{\"code\":\"USD\",\"rate\":\"10,095.9106\",\"description\":\"United States Dollar\",\"rate_float\":10095.9106},\"NZD\":{\"code\":\"NZD\",\"rate\":\"15,095.5670\",\"description\":\"New Zealand Dollar\",\"rate_float\":15095.567}}}".getBytes());
-
+        stream = new ByteArrayInputStream("{\"time\": {\"updated\": \"Oct 15, 2020 22:55:00 UTC\",\"updatedISO\": \"2020-10-15T22:55:00+00:00\",\"updateduk\": \"Oct 15, 2020 at 23:55 BST\"},\"chartName\": \"Bitcoin\",\"bpi\": {\"USD\": {\"code\": \"USD\",\"symbol\": \"&#36;\",\"rate\": \"11,486.5341\",\"description\": \"United States Dollar\",\"rate_float\": 11486.5341},\"GBP\": {\"code\": \"GBP\",\"symbol\": \"&pound;\",\"rate\": \"8,900.8693\",\"description\": \"British Pound Sterling\",\"rate_float\": 8900.8693},\"EUR\": {\"code\": \"EUR\",\"symbol\": \"&euro;\",\"rate\": \"9,809.3278\",\"description\": \"Euro\",\"rate_float\": 9809.3278}}}".getBytes());
         converterSvc = new ConverterSvc(client);
     }
 
     @Test
-    public void shouldGetNZDExchangeRate() throws IOException {
+    public void shouldReturnUSDExchangeRate() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
@@ -59,15 +58,15 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
 
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.NZD);
+        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.USD);
 
         //assert
-        double expected = 15095.5670;
+        double expected = 11486.5341;
         Assertions.assertEquals(expected, actual, DELTA);
     }
 
     @Test
-    public void shouldGetUSDExchangeRate() throws IOException {
+    public void shouldReturnGBPExchangeRate() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
@@ -75,10 +74,10 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.USD);
+        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.GBP);
     
         //assert
-        double expected = 10095.9106;
+        double expected = 8900.8693;
         Assertions.assertEquals(expected, actual, DELTA);
     }
 
@@ -94,7 +93,7 @@ public class ConverterSvcTest
         var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.USD, 1);
     
         //assert
-        double expected = 10095.9106;
+        double expected = 11486.5341;
         Assertions.assertEquals(expected, actual, DELTA);
     }
     
@@ -110,39 +109,7 @@ public class ConverterSvcTest
         var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.USD, 2);
     
         //assert
-        double expected = 20191.8212;
-        Assertions.assertEquals(expected, actual, DELTA);
-    }
-    
-    @Test
-    public void shouldConvert1BitcoinToNZD() throws IOException {
-        when(statusLine.getStatusCode()).thenReturn(200);
-        when(response.getStatusLine()).thenReturn(statusLine);
-        when(response.getEntity()).thenReturn(entity);
-        when(entity.getContent()).thenReturn(stream);
-        when(client.execute(any(HttpGet.class))).thenReturn(response);
-    
-        ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 1);
-    
-        //assert
-        double expected = 15095.5670;
-        Assertions.assertEquals(expected, actual, DELTA);
-    }
-    
-    @Test
-    public void shouldConvert2BitcoinsToNZD() throws IOException {
-        when(statusLine.getStatusCode()).thenReturn(200);
-        when(response.getStatusLine()).thenReturn(statusLine);
-        when(response.getEntity()).thenReturn(entity);
-        when(entity.getContent()).thenReturn(stream);
-        when(client.execute(any(HttpGet.class))).thenReturn(response);
-    
-        ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 2);
-    
-        //assert
-        double expected = 30191.1340;
+        double expected = 22973.0682;
         Assertions.assertEquals(expected, actual, DELTA);
     }
 
@@ -155,7 +122,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, -1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> converterSvc.ConvertBitcoins(ConverterSvc.Currency.USD, -1));
     }
 
     @Test
@@ -165,7 +132,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenReturn(response);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 2);
+        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.USD, 2);
     
         //assert
         double expected = -1;
@@ -177,7 +144,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenThrow(IOException.class);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.NZD);
+        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.USD);
     
         //assert
         double expected = -1;
@@ -185,7 +152,7 @@ public class ConverterSvcTest
     }
 
     @Test
-    public void shouldReturnNegative1WhenCloseThrowsIOException() throws IOException {
+    public void shouldReturnNegative1WhenClosingResponseThrowsIOException() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
@@ -195,7 +162,7 @@ public class ConverterSvcTest
         doThrow(IOException.class).when(response).close();
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.NZD);
+        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.USD);
     
         //assert
         double expected = -1;
