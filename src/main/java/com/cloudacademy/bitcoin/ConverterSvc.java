@@ -98,7 +98,7 @@ public class ConverterSvc
         return rate;
     }
 
-    public double ConvertBitcoins(Currency currency, int coins) throws IllegalArgumentException {
+    public double ConvertBitcoins(Currency currency, double coins) throws IllegalArgumentException {
         double dollars = 0;
 
         if(coins < 0) {
