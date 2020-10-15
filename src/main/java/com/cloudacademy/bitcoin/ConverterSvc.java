@@ -91,8 +91,7 @@ public class ConverterSvc
                 default:
                     rate = -1;
             }
-            response.close();
-        } catch (Exception ex) {
+        } catch (IOException | ParseException ex) {
             rate = -1;
         }
 
@@ -106,15 +105,11 @@ public class ConverterSvc
             throw new IllegalArgumentException("Number of coins must not be less than zero"); 
         }
 
-        try {
-            var exchangeRate = GetExchangeRate(currency);
+        var exchangeRate = GetExchangeRate(currency);
 
-            if(exchangeRate >= 0) {
-                dollars = exchangeRate * coins;
-            } else {
-                dollars = -1;
-            }
-        } catch (Exception ex) {
+        if(exchangeRate >= 0) {
+            dollars = exchangeRate * coins;
+        } else {
             dollars = -1;
         }
 
