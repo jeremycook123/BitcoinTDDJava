@@ -51,8 +51,9 @@ mvn package -Dmaven.test.skip=true
 
 Download and install jar lib
 
-mvn install:install-file -Dfile="/Users/jeremycook/java-tdd/bitcoin-client/bitcoin-client/libs/bitcoint-converter-app-1.0.5.jar" -DgroupId=com.cloudacademy -DartifactId=bitcoint-converter-app -Dversion=1.0.5 -Dpackaging=jar
-java -jar target/bitcoin-client-1.0-SNAPSHOT-jar-with-dependencies.jar
+FILE=bitcoin-converter-svc-lib-1.0.7-SNAPSHOT.jar
+mvn install:install-file -Dfile=/Users/jeremycook/java-tdd/bitcoin-client/bitcoin-client/libs/$FILE -DgroupId=com.cloudacademy -DartifactId=bitcoin-converter-svc-lib -Dversion=1.0.7 -Dpackaging=jar
+java -jar target/bitcoin-converter-client-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 
 Update the pom
 
