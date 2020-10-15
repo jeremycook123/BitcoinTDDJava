@@ -71,14 +71,15 @@ public class ConverterSvc
 
     public double GetExchangeRate(Currency currency) throws IOException {
         double rate = 0;
+        CloseableHttpResponse response = null;
 
         try {
-            CloseableHttpResponse res = this.httpclient.execute(httpget);
-            switch (res.getStatusLine().getStatusCode()) {
+            response = this.httpclient.execute(httpget);
+            switch (response.getStatusLine().getStatusCode()) {
                 case 200:
-                    HttpEntity entity = res.getEntity();
+                    HttpEntity entity = response.getEntity();
 
-                    InputStream inputStream = res.getEntity().getContent();
+                    InputStream inputStream = response.getEntity().getContent();
                     var json = new BufferedReader(new InputStreamReader(inputStream));
 
                     @SuppressWarnings("deprecation")
@@ -95,7 +96,7 @@ public class ConverterSvc
             rate = -1;
         }
         finally {
-            httpclient.close();
+            response.close();
         }
 
         return rate;
