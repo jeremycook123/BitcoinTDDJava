@@ -45,15 +45,20 @@ curl -s https://api.coindesk.com/v1/bpi/currentprice/NZD.json | jq .
 
 ==========================
 
-java -jar target/bitcoint-converter-app-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 mvn package -Dmaven.test.skip=true
 
 ==========================
 
-Download and install 
+Download and install jar lib
 
 mvn install:install-file -Dfile="/Users/jeremycook/java-tdd/bitcoin-client/bitcoin-client/libs/bitcoint-converter-app-1.0.5.jar" -DgroupId=com.cloudacademy -DartifactId=bitcoint-converter-app -Dversion=1.0.5 -Dpackaging=jar
 java -jar target/bitcoin-client-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+Update the pom
+
+mvn clean package
+
+java -jar target/bitcoin-converter-client-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 
 ==========================
 

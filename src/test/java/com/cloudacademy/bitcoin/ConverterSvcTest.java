@@ -21,6 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * Unit test for simple ConverterSvc.
@@ -176,7 +177,7 @@ public class ConverterSvcTest
         when(client.execute(any(HttpGet.class))).thenThrow(IOException.class);
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 2);
+        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.NZD);
     
         //assert
         double expected = -1;
@@ -185,12 +186,16 @@ public class ConverterSvcTest
 
     @Test
     public void shouldReturnNegative1WhenCloseThrowsIOException() throws IOException {
-        doThrow(IOException.class)
-        .when(client)
-        .close();
+        when(statusLine.getStatusCode()).thenReturn(200);
+        when(response.getStatusLine()).thenReturn(statusLine);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(stream);
+        when(client.execute(any(HttpGet.class))).thenReturn(response);
+
+        doThrow(IOException.class).when(response).close();
     
         ConverterSvc converterSvc = new ConverterSvc(client);
-        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.NZD, 2);
+        var actual = converterSvc.GetExchangeRate(ConverterSvc.Currency.NZD);
     
         //assert
         double expected = -1;

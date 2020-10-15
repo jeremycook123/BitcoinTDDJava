@@ -1,6 +1,7 @@
 package com.cloudacademy.bitcoin;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -69,12 +70,10 @@ public class ConverterSvc
         NZD
     }
 
-    public double GetExchangeRate(Currency currency) throws IOException {
+    public double GetExchangeRate(Currency currency) {
         double rate = 0;
-        CloseableHttpResponse response = null;
 
-        try {
-            response = this.httpclient.execute(httpget);
+        try (CloseableHttpResponse response = this.httpclient.execute(httpget)) {
             switch (response.getStatusLine().getStatusCode()) {
                 case 200:
                     HttpEntity entity = response.getEntity();
@@ -92,11 +91,9 @@ public class ConverterSvc
                 default:
                     rate = -1;
             }
+            response.close();
         } catch (Exception ex) {
             rate = -1;
-        }
-        finally {
-            response.close();
         }
 
         return rate;
@@ -114,12 +111,10 @@ public class ConverterSvc
 
             if(exchangeRate >= 0) {
                 dollars = exchangeRate * coins;
-            }
-            else {
+            } else {
                 dollars = -1;
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             dollars = -1;
         }
 
