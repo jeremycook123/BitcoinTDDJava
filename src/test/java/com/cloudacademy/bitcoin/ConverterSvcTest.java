@@ -114,6 +114,22 @@ public class ConverterSvcTest
     }
 
     @Test
+    public void shouldConvert0BitcoinsTo0USD() throws IOException {
+        when(statusLine.getStatusCode()).thenReturn(200);
+        when(response.getStatusLine()).thenReturn(statusLine);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(stream);
+        when(client.execute(any(HttpGet.class))).thenReturn(response);
+    
+        ConverterSvc converterSvc = new ConverterSvc(client);
+        var actual = converterSvc.ConvertBitcoins(ConverterSvc.Currency.USD, 0);
+    
+        //assert
+        double expected = 0;
+        Assertions.assertEquals(expected, actual, DELTA);
+    }
+
+    @Test
     public void shouldThrowExceptionWhenBitcoinsLessThanZero() throws IOException {
         when(statusLine.getStatusCode()).thenReturn(200);
         when(response.getStatusLine()).thenReturn(statusLine);
