@@ -71,7 +71,7 @@ mvn package -Dmaven.test.skip=true
 Download and install jar lib
 
 FILE=bitcoin-converter-svc-lib-1.0.9-SNAPSHOT.jar
-VERSION=`echo $FILE | egrep -o '\d\.\d\.\d\-\w*'`
+VERSION=`echo $FILE | egrep -o '\d*\.\d*\.\d*\-\w*'`
 mvn install:install-file -Dfile=./libs/$FILE -DgroupId=com.cloudacademy -DartifactId=bitcoin-converter-svc-lib -Dversion=$VERSION -Dpackaging=jar
 mvn package
 java -jar target/bitcoin-converter-client-1.0.0-SNAPSHOT-jar-with-dependencies.jar
