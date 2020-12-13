@@ -67,3 +67,9 @@ java -jar target/bitcoin-converter-client-1.0.0-SNAPSHOT-jar-with-dependencies.j
 mvn jacoco:prepare-agent clean test jacoco:report coveralls:report -Dcoveralls.secret=xxxxxxxxxxx
 
 ==========================
+
+
+git config --global user.email "jeremy.cook@cloudacademy.com"
+git config --global user.name "Jeremy Cook"
+git config --global credential.helper cache
+git config --global credential.helper 'cache --timeout=86400'
