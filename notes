@@ -1,3 +1,22 @@
+sudo apt-get install openjdk-11-jdk
+java -version
+
+wget https://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P /tmp
+sudo tar xf /tmp/apache-maven-*.tar.gz -C /opt
+sudo ln -s /opt/apache-maven-3.6.3 /opt/maven
+
+cat > /etc/profile.d/maven.sh << EOF
+export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
+export M2_HOME=/opt/maven
+export MAVEN_HOME=/opt/maven
+export PATH=${M2_HOME}/bin:${PATH}
+EOF
+sudo chmod +x /etc/profile.d/maven.sh
+source /etc/profile.d/maven.sh
+mvn -version
+
+==========================
+
 mvn archetype:generate -DgroupId=com.cloudacademy.bitcoin.converter -DartifactId=bitcoin-converter-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
 tree
 cd bitcoin-converter-app/
@@ -52,8 +71,9 @@ mvn package -Dmaven.test.skip=true
 Download and install jar lib
 
 FILE=bitcoin-converter-svc-lib-1.0.9-SNAPSHOT.jar
-VERSION=`echo $FILE | egrep -o '\d\.\d\.\d\-\w*'`
+VERSION=`echo $FILE | egrep -o '\d*\.\d*\.\d*\-\w*'`
 mvn install:install-file -Dfile=./libs/$FILE -DgroupId=com.cloudacademy -DartifactId=bitcoin-converter-svc-lib -Dversion=$VERSION -Dpackaging=jar
+mvn package
 java -jar target/bitcoin-converter-client-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 
 Update the pom
@@ -68,6 +88,24 @@ mvn jacoco:prepare-agent clean test jacoco:report coveralls:report -Dcoveralls.s
 
 ==========================
 
+https://dzone.com/articles/reporting-code-coverage-using-maven-and-jacoco-plu
+https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
+https://stackoverflow.com/questions/48928930/right-way-to-close-closeablehttpresponse-closeablehttpclient?noredirect=1&lq=1
+
+https://www.codingrevolution.com/junit-5-expected-exception/
+https://github.com/trautonen/coveralls-maven-plugin
+https://www.baeldung.com/junit-5
+https://www.baeldung.com/junit-5-runwith
+https://howtodoinjava.com/junit-5-tutorial/
+https://examples.javacodegeeks.com/core-java/mockito/mockito-thenreturn-example/
+https://dzone.com/articles/refactoring-code-for-testability-an-example-1
+https://www.tutorialspoint.com/mockito/mockito_junit_integration.htm
+https://howtodoinjava.com/mockito/junit-mockito-example/
+https://www.petrikainulainen.net/programming/testing/junit-5-tutorial-running-unit-tests-with-maven/
+https://search.maven.org/artifact/org.eluder.coveralls/coveralls-maven-plugin/4.3.0/maven-plugin
+https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
+
+==========================
 
 git config --global user.email "jeremy.cook@cloudacademy.com"
 git config --global user.name "Jeremy Cook"
